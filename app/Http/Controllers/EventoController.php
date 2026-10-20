@@ -16,14 +16,14 @@ class EventoController extends Controller
         return view('eventos.index', compact('eventos'));
     }
 
-    public function show($id)
-    {
-        $evento = Evento::find($id);
+   public function show(Evento $evento)
+{
+    $perguntas = Pergunta::where('evento_id', $evento->id)
+        ->latest()
+        ->paginate(10);
 
-        $perguntas = Pergunta::all();
-
-        return view('eventos.show', compact('evento', 'perguntas'));
-    }
+    return view('eventos.show', compact('evento', 'perguntas'));
+}
 
  
     public function storePergunta(StorePerguntaRequest $request, $id)
@@ -50,11 +50,4 @@ class EventoController extends Controller
         return redirect()->route('eventos.show', $evento->id);
     }
 }
-public function show(Evento $evento)
-{
-    $perguntas = Pergunta::where('evento_id', $evento->id)
-        ->latest()
-        ->paginate(10);
 
-    return view('eventos.show', compact('evento', 'perguntas'));
-}

@@ -50,3 +50,11 @@ class EventoController extends Controller
         return redirect()->route('eventos.show', $evento->id);
     }
 }
+public function show(Evento $evento)
+{
+    $perguntas = Pergunta::where('evento_id', $evento->id)
+        ->latest()
+        ->paginate(10);
+
+    return view('eventos.show', compact('evento', 'perguntas'));
+}
